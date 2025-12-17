@@ -1,35 +1,48 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'ROLLBACK_VERSION', defaultValue: '', description: 'Build number to rollback')
+    }
+
     environment {
         APP_NAME = "html-cicd-demo"
         PORT = "8085"
     }
 
     stages {
-        stage('Build Image') {
+        stage('Checkout') {
             steps {
-                sh '''
-                #!/bin/bash
-                set -e
-                docker build -t ${APP_NAME}:${BUILD_NUMBER} .
-                '''
+                git 'https://github.com/vigneshsivasubramaniyan/cicd_jenkins_to_docker.git'
+            }
+        }
+
+        stage('Build Image') {
+            when {
+                expression { params.ROLLBACK_VERSION == '' }
+            }
+            steps {
+                sh """
+                docker build -t $APP_NAME:${env.BUILD_NUMBER} .
+                """
             }
         }
 
         stage('Deploy') {
             steps {
-                sh '''
-                #!/bin/bash
-                set -e
-                docker stop ${APP_NAME} || true
-                docker rm ${APP_NAME} || true
+                script {
+                    def imageTag = params.ROLLBACK_VERSION ?: env.BUILD_NUMBER
 
-                docker run -d \
-                  --name ${APP_NAME} \
-                  -p ${PORT}:80 \
-                  ${APP_NAME}:${BUILD_NUMBER}
-                '''
+                    sh """
+                    docker stop $APP_NAME || true
+                    docker rm $APP_NAME || true
+
+                    docker run -d \
+                      --name $APP_NAME \
+                      -p $PORT:80 \
+                      $APP_NAME:$imageTag
+                    """
+                }
             }
         }
     }
