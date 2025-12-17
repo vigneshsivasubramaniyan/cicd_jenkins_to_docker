@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'ROLLBACK_VERSION', defaultValue: '', description: 'Build number to rollback')
+    }
+
     environment {
         IMAGE_NAME = 'html-cicd-demo'
         CONTAINER_NAME = 'html-cicd-demo'
@@ -14,16 +18,24 @@ pipeline {
             }
         }
         stage('Build Image') {
+            when {
+                expression { params.ROLLBACK_VERSION == '' }
+            }
             steps {
-                sh 'docker build -t $IMAGE_NAME:latest .'
+                sh '''
+                docker build -t $IMAGE_NAME:${env.BUILD_NUMBER} .
+                '''
             }
         }
         stage('Deploy') {
             steps {
+                script {
+                    def version = params.ROLLBACK_VERSION ?: env.BUILD_NUMBER
+                }
                 sh '''
                     docker stop $CONTAINER_NAME || true
                     docker rm -f $CONTAINER_NAME || true
-                    docker run -d -p $PORT:80 --name $CONTAINER_NAME $IMAGE_NAME:latest
+                    docker run -d -p $PORT:80 --name $CONTAINER_NAME $imageTag
                 '''
             }
         }
