@@ -18,7 +18,7 @@ pipeline {
         stage('Detect active color') {
             steps {
                 sh '''
-                if [! -f $ACTIVE_COLOR_FILE ]; then
+                if [ ! -f .active_color ]; then
                     echo "blue" > $ACTIVE_COLOR_FILE
                 fi
                 '''
