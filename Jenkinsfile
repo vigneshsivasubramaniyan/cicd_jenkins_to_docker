@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/vigneshsivasubramaniyan/cicd_jenkins_to_docker.git'
+                git branch: 'main', url: 'https://github.com/vigneshsivasubramaniyan/cicd_jenkins_to_docker.git'
             }
         }
 
