@@ -114,10 +114,10 @@
         }
 
         .subtitle {
-            font-size: 1.4em;
-            color: #5a6c7d;
+            font-size: 2.4em;
+            color: #2c3e50;
             margin-bottom: 40px;
-            font-weight: 300;
+            font-weight: 700;
             animation: fadeInUp 1s ease-out 0.3s both;
         }
 
@@ -472,25 +472,26 @@
         <h2>Projects</h2>
         <div class="projects-grid">
             <div class="project-card">
-                <h3>Supernova</h3>
-                <p>AI-powered English learning platform with speech recognition and personalized learning paths</p>
+                <h3>HomeLab — Modular Self-Hosted DevOps & AI Stack</h3>
+                <p>Complete home lab setup using Docker,Portainer,Cloudflare Tunnel for secure remote access. Includes automated backups and monitoring.</p>
                 <div class="tech-stack">
-                    <span class="tech-badge">AI/ML</span>
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">NLP</span>
+                    <span class="tech-badge">Docker</span>
+                    <span class="tech-badge">Portainer</span>
+                    <span class="tech-badge">Jenkins</span>
                 </div>
-                <a href="https://github.com/yourusername/supernova" target="_blank" class="github-link">View on GitHub →</a>
+                <a href="https://github.com/vigneshsivasubramaniyan/HomeLab" target="_blank" class="github-link">View on GitHub →</a>
             </div>
 
             <div class="project-card">
-                <h3>KADAI</h3>
-                <p>Local vendor delivery app connecting customers with nearby shops for quick deliveries</p>
+                <h3>Two Tier Web Application with CI/CD Automation</h3>
+                <p>Complete CI/CD pipeline with Docker containerization, Jenkins and AWS deployment</p>
                 <div class="tech-stack">
-                    <span class="tech-badge">React</span>
-                    <span class="tech-badge">Node.js</span>
-                    <span class="tech-badge">MongoDB</span>
+                    <span class="tech-badge">Docker</span>
+                    <span class="tech-badge">Jenkins</span>
+                    <span class="tech-badge">AWS</span>
+                    
                 </div>
-                <a href="https://github.com/yourusername/kadai" target="_blank" class="github-link">View on GitHub →</a>
+                <a href="https://github.com/vigneshsivasubramaniyan/cicd_jenkins_to_docker" target="_blank" class="github-link">View on GitHub →</a>
             </div>
 
             <div class="project-card">
@@ -505,27 +506,17 @@
             </div>
 
             <div class="project-card">
-                <h3>n8n Movie Automation</h3>
+                <h3>N8N Chatbot on Website </h3>
                 <p>AI-powered movie dubbing pipeline with automated voice synthesis and translation</p>
                 <div class="tech-stack">
                     <span class="tech-badge">n8n</span>
                     <span class="tech-badge">AI</span>
                     <span class="tech-badge">Gemini API</span>
                 </div>
-                <a href="https://github.com/yourusername/movie-automation" target="_blank" class="github-link">View on GitHub →</a>
+                <a href="https://github.com/vigneshsivasubramaniyan/cicd_jenkins_to_docker" target="_blank" class="github-link">View on GitHub →</a>
             </div>
 
-            <div class="project-card">
-                <h3>Docker CI/CD Automation</h3>
-                <p>Complete CI/CD pipeline with Docker containerization, Jenkins and AWS deployment</p>
-                <div class="tech-stack">
-                    <span class="tech-badge">Docker</span>
-                    <span class="tech-badge">Jenkins</span>
-                    <span class="tech-badge">AWS</span>
-                    <span class="tech-badge">K8s</span>
-                </div>
-                <a href="https://github.com/yourusername/cicd-automation" target="_blank" class="github-link">View on GitHub →</a>
-            </div>
+
         </div>
     </section>
 
@@ -587,7 +578,7 @@
 
   const chatScript = document.createElement('script');
   chatScript.src =
-    "assets/js/chat-widget.js";
+    'https://cdn.jsdelivr.net/gh/WayneSimpson/n8n-chatbot-template@ba944c3/chat-widget.js';
   chatScript.defer = true;
   document.body.appendChild(chatScript);
 </script>
