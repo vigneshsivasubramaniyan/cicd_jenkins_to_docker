@@ -1,158 +1,596 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MadrasMic Dashboard</title>
-<link rel="shortcut icon" href="images/madrasmic_dashboard_icon.png" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #f5f6fa;
-    color: #333;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigneshwaran Sivasubramaniyan - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  header {
-    text-align: center;
-    padding: 40px 15px 15px;
-    background: #2f3640;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
+        html {
+            scroll-behavior: smooth;
+        }
 
-  header h1 { font-size: 2rem; margin-bottom: 8px; }
-  header p { font-size: 1rem; color: #dcdde1; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #ffffff;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
 
-  main.dashboard {
-    max-width: 1100px;
-    margin: auto auto 20px; /* push to bottom */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 18px;
-    padding: 0 15px;
-    width: 100%;
-  }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
 
-  .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 14px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.25s ease;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border-left: 4px solid #4cd137;
-  }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            list-style: none;
+        }
 
-  .card:hover { transform: translateY(-4px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
-  .card img { width: 38px; margin-bottom: 10px; }
-  .card h2 { font-size: 1.1rem; margin-bottom: 3px; }
-  .card span { font-size: 0.8rem; color: #555; text-align: center; }
+        nav a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
 
-  /* Accent colors */
-  .automation { border-left-color: #1e90ff; }
-  .media { border-left-color: #ff4757; }
-  .ai { border-left-color: #ffa502; }
-  .cloud { border-left-color: #2ed573; }
-  .docs { border-left-color: #3742fa; }
-  .docker { border-left-color: #00d2d3; }
-  .ci { border-left-color: #ff6b81; }
+        nav a:hover {
+            color: #3498db;
+        }
 
-  footer {
-    text-align: center;
-    padding: 12px;
-    background: #2f3640;
-    color: #dcdde1;
-    font-size: 0.85rem;
-    margin-top: auto; /* footer stays at bottom */
-  }
+        section {
+            min-height: 100vh;
+            padding: 120px 20px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-  footer a { color: #4bcf2d; text-decoration: none; font-weight: 600; }
-  footer a:hover { text-decoration: underline; }
+        #hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 180px;
+        }
 
-  @media (max-width: 600px) {
-    header h1 { font-size: 1.6rem; }
-    main.dashboard { gap: 12px; }
-    .card { padding: 12px; }
-  }
-</style>
+        .profile-img {
+            width: 270px;
+            height: 300px;
+            border-radius: 20%;
+            border: 3px solid #3498db;
+            margin-bottom: 50px;
+            background-image: url('assets/images/profile.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #3498db;
+            margin-bottom: 15px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            color: #5a6c7d;
+            margin-bottom: 40px;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .about-section {
+            max-width: 900px;
+            text-align: left;
+            margin-top: 40px;
+            background: #f8f9fa;
+            padding: 50px 40px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            animation: fadeInUp 1.2s ease-out 0.6s both;
+        }
+
+        .about-section h3 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .about-section h3::before {
+            content: "About ";
+            color: #2c3e50;
+        }
+
+        .about-section h3::after {
+            content: "Me";
+            color: #3498db;
+        }
+
+        .about-section h3::before,
+        .about-section h3::after {
+            font-weight: 700;
+        }
+
+        .about-underline {
+            width: 80px;
+            height: 4px;
+            background: #3498db;
+            margin: -20px auto 40px;
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .about-section p {
+            color: #5a6c7d;
+            line-height: 1.8;
+            margin-bottom: 0;
+            font-size: 1em;
+        }
+
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .about-section h3 {
+                font-size: 2.2em;
+            }
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.3);
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #3498db;
+            border: 2px solid #3498db;
+        }
+
+        .btn-secondary:hover {
+            background: #3498db;
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 60px;
+            text-align: center;
+            color: #3498db;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.4s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: #3498db;
+            box-shadow: 0 15px 40px rgba(52, 152, 219, 0.15);
+        }
+
+        .project-card h3 {
+            font-size: 1.5em;
+            color: #3498db;
+            margin-bottom: 12px;
+        }
+
+        .project-card p {
+            color: #5a6c7d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-badge {
+            background: #e8f4fd;
+            color: #3498db;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            border: 1px solid #3498db;
+        }
+
+        .github-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+
+        .github-link:hover {
+            color: #2980b9;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .guide-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .guide-card:hover {
+            transform: translateY(-5px);
+            border-color: #3498db;
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.15);
+        }
+
+        .guide-card h3 {
+            font-size: 1.3em;
+            color: #3498db;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-card p {
+            color: #5a6c7d;
+            line-height: 1.5;
+            font-size: 0.9em;
+        }
+
+        .chatbot-iframe {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            height: 550px;
+            border: 2px solid #3498db;
+            border-radius: 16px;
+            box-shadow: 0 10px 50px rgba(52, 152, 219, 0.2);
+            z-index: 1000;
+            background: #ffffff;
+        }
+
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #3498db;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            color: #ffffff;
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+            z-index: 1001;
+            transition: all 0.3s;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            background: #2980b9;
+        }
+
+        .chatbot-iframe.hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1.1em;
+            }
+
+            nav ul {
+                gap: 20px;
+                font-size: 0.9em;
+            }
+
+            .chatbot-iframe {
+                width: calc(100% - 40px);
+                height: 500px;
+                right: 20px;
+                left: 20px;
+            }
+
+            .projects-grid,
+            .guides-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section {
+                padding: 100px 15px 60px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>MadrasMic Home Lab</h1>
-    <p>Your centralized self-hosted dashboard</p>
-  </header>
+    <nav>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#guides">Guides</a></li>
+        </ul>
+    </nav>
 
-  <main class="dashboard">
-    <a href="https://n8n.madrasmic.in" class="card automation">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/N8n-logo-new.svg" alt="n8n">
-      <h2>n8n</h2>
-      <span>Automation Workflows</span>
-    </a>
+    <section id="hero">
+        <div class="profile-img"></div>
+        <h1>Vigneshwaran Sivasubramaniyan</h1>
+        <p class="subtitle">Cloud & DevOps Engineer</p>
+        <div class="cta-buttons">
+            <a href="assets/resume/VigneshWaran Sivasubramaniyan_DevOps.pdf" download="Vigneshwaran_Resume.pdf" class="btn btn-primary">Download CV</a>
+            <a href="https://www.linkedin.com/in/vigneshwaran-sivasubramaniyan/" target="_blank" class="btn btn-secondary">LinkedIn</a>
+        </div>
+        
+        <div class="about-section">
+            <h3></h3>
+            <div class="about-underline"></div>
+            <div class="about-content">
+                <p>As a seasoned DevOps Engineer, I specialize in building robust, scalable infrastructure that empowers development teams to ship faster and more reliably.</p>
+                <p>I'm passionate about automation and have implemented numerous CI/CD pipelines that have reduced deployment times by up to 70% while improving reliability.</p>
+            </div>
+            <div class="about-content">
+                <p>My expertise spans containerization with Docker and Kubernetes, cloud platforms including AWS and Azure, and comprehensive monitoring solutions using Prometheus and Grafana.</p>
+                <p>When I'm not optimizing infrastructure, I enjoy exploring new DevOps tools and contributing to the community through my HomeLab projects.</p>
+            </div>
+        </div>
+    </section>
 
-    <a href="https://media.madrasmic.in" class="card media">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Media">
-      <h2>Media</h2>
-      <span>Media Server</span>
-    </a>
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Supernova</h3>
+                <p>AI-powered English learning platform with speech recognition and personalized learning paths</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">AI/ML</span>
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">NLP</span>
+                </div>
+                <a href="https://github.com/yourusername/supernova" target="_blank" class="github-link">View on GitHub →</a>
+            </div>
 
-    <a href="https://gpt.madrasmic.in" class="card ai">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/ef/ChatGPT-Logo.svg" alt="ChatGPT">
-      <h2>ChatGPT</h2>
-      <span>Local AI Assistant</span>
-    </a>
+            <div class="project-card">
+                <h3>KADAI</h3>
+                <p>Local vendor delivery app connecting customers with nearby shops for quick deliveries</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">React</span>
+                    <span class="tech-badge">Node.js</span>
+                    <span class="tech-badge">MongoDB</span>
+                </div>
+                <a href="https://github.com/yourusername/kadai" target="_blank" class="github-link">View on GitHub →</a>
+            </div>
 
-    <a href="https://drive.madrasmic.in" class="card cloud">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg" alt="Nextcloud">
-      <h2>Nextcloud</h2>
-      <span>Private Cloud Storage</span>
-    </a>
+            <div class="project-card">
+                <h3>MandiMap</h3>
+                <p>Micro-SaaS platform for vendor management with real-time inventory tracking</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">SaaS</span>
+                    <span class="tech-badge">PostgreSQL</span>
+                    <span class="tech-badge">APIs</span>
+                </div>
+                <a href="https://github.com/yourusername/mandimap" target="_blank" class="github-link">View on GitHub →</a>
+            </div>
 
-    <a href="https://wiki.madrasmic.in" class="card docs">
-      <img src="images/Wiki.svg" alt="Wiki.js">
-      <h2>Wiki.js</h2>
-      <span>Knowledge Base</span>
-    </a>
+            <div class="project-card">
+                <h3>n8n Movie Automation</h3>
+                <p>AI-powered movie dubbing pipeline with automated voice synthesis and translation</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">n8n</span>
+                    <span class="tech-badge">AI</span>
+                    <span class="tech-badge">Gemini API</span>
+                </div>
+                <a href="https://github.com/yourusername/movie-automation" target="_blank" class="github-link">View on GitHub →</a>
+            </div>
 
-    <a href="https://portainer.madrasmic.in" class="card docker">
-      <img src="images/portainer.svg" alt="Portainer">
-      <h2>Portainer</h2>
-      <span>Docker Management</span>
-    </a>
+            <div class="project-card">
+                <h3>Docker CI/CD Automation</h3>
+                <p>Complete CI/CD pipeline with Docker containerization, Jenkins and AWS deployment</p>
+                <div class="tech-stack">
+                    <span class="tech-badge">Docker</span>
+                    <span class="tech-badge">Jenkins</span>
+                    <span class="tech-badge">AWS</span>
+                    <span class="tech-badge">K8s</span>
+                </div>
+                <a href="https://github.com/yourusername/cicd-automation" target="_blank" class="github-link">View on GitHub →</a>
+            </div>
+        </div>
+    </section>
 
-    <a href="https://jenkins.madrasmic.in" class="card ci">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Jenkins_logo.svg" alt="Jenkins">
-      <h2>Jenkins</h2>
-      <span>CI/CD Pipeline</span>
-    </a>
-    
-    <a href="https://vscode.madrasmic.in" class="card automation">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" alt="VSCode">
-      <h2>VScode</h2>
-      <span>WebCoding</span>
-    </a>
+    <section id="guides">
+        <h2>Guides & Notes</h2>
+        <div class="guides-grid">
+            <div class="guide-card">
+                <h3>🐳 Docker Notes</h3>
+                <p>Comprehensive Docker guide covering containerization, multi-stage builds, networking, volumes, and Docker Compose orchestration</p>
+            </div>
 
-        <a href="https://board.madrasmic.in" class="card media">
-      <img src="images/WhiteBoard.png" alt="WhiteBoard">
-      <h2>WhiteBoard  </h2>
-      <span>WebDrawing</span>
-    </a>
-  </main>
+            <div class="guide-card">
+                <h3>☸️ Kubernetes Notes</h3>
+                <p>K8s fundamentals including pods, deployments, services, ingress, configmaps, secrets, and cluster management best practices</p>
+            </div>
 
-  <footer>
-    <p>For any queries or commands, contact: 
-      <a href="/cdn-cgi/l/email-protection#d1a2a4a1a1bea3a591bcb0b5a3b0a2bcb8b2ffb8bf"><span class="__cf_email__" data-cfemail="6c1f191c1c031e182c010d081e0d1f01050f420502">[email&#160;protected]</span></a>
-    </p>
-  </footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"7443be5bfec64d0a9ced2b5f61d8ecff","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+            <div class="guide-card">
+                <h3>⚙️ DevOps Notes</h3>
+                <p>DevOps principles, CI/CD pipeline design, infrastructure as code, monitoring, logging, and deployment strategies</p>
+            </div>
+
+            <div class="guide-card">
+                <h3>☁️ Cloud Architecture</h3>
+                <p>AWS cloud architecture patterns, serverless design, microservices, scalability, security, and cost optimization</p>
+            </div>
+
+            <div class="guide-card">
+                <h3>🤖 AI Workflow Docs</h3>
+                <p>Building AI automation pipelines with n8n, API integrations, voice assistants, and machine learning workflows</p>
+            </div>
+
+            <div class="guide-card">
+                <h3>🔧 CI/CD Best Practices</h3>
+                <p>Jenkins pipelines, GitOps workflows, automated testing, deployment automation, and infrastructure provisioning</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+  window.ChatWidgetConfig = {
+    webhook: {
+      url: 'https://n8n.madrasmic.in/webhook/2c758e2d-57b4-4551-b5f6-caf4a261172f/chat',
+      route: 'general'
+    },
+    branding: {
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Chatbot_img.png',
+      name: 'AI ChatBot',
+      welcomeText: 'Hi, how can we help?',
+      responseTimeText: 'We usually respond right away'
+    },
+    style: {
+      primaryColor: '#3498db',   // matches your portfolio theme
+      secondaryColor: '#2c3e50',
+      position: 'right',
+      backgroundColor: '#ffffff',
+      fontColor: '#333333'
+    }
+  };
+
+  const chatScript = document.createElement('script');
+  chatScript.src =
+    "assets/js/chat-widget.js";
+  chatScript.defer = true;
+  document.body.appendChild(chatScript);
+</script>
+
 </body>
 </html>
