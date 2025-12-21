@@ -24,8 +24,7 @@ pipeline {
             steps {
                 sh """
                 docker build --no-cache \
-                  -t $APP_NAME:${env.BUILD_NUMBER} \
-                  -t $APP_NAME:latest .
+                  -t $APP_NAME:${env.BUILD_NUMBER}
                 """
             }
         }
