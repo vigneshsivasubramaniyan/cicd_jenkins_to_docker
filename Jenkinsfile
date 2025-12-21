@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 sh """
-                docker build --no-cache -t $APP_NAME:${env.BUILD_NUMBER}
+                docker build --no-cache -t $APP_NAME:${env.BUILD_NUMBER} .
                 """
             }
         }
