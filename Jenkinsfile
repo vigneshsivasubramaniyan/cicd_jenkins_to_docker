@@ -39,7 +39,7 @@ pipeline {
 
                     docker run -d \
                       --name $APP_NAME \
-                      --restart=unless-stoped \
+                      --restart=unless-stopped \
                       -p $PORT:80 \
                       $APP_NAME:$imageTag
                     """
