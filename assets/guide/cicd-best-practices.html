@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AWS Jenkins CI/CD Pipeline – Full Documentation</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; }
+h1, h2, h3 { color: #1b6ec1; }
+code, pre { background: #dfdfdf; padding: 20px; display: block; border-radius: 8px; }
+.section { margin-bottom: 40px; }
+</style>
+</head>
+<body>
+
+<h1>AWS Jenkins → Docker → ECR → EC2 CI/CD Pipeline</h1>
+<p>This document provides a complete end-to-end setup guide for a production-style CI/CD pipeline using Jenkins, Docker, ECR, and EC2.</p>
+
+<!-- SECTION 1 -->
+<h2>SECTION 1 — AWS Account Preparation</h2>
+<ul>
+<li>Create AWS account</li>
+<li>Create IAM user with required permissions</li>
+<li>Region: <strong>ap-south-1</strong></li>
+</ul>
+
+<!-- SECTION 2 -->
+<h2>SECTION 2 — Launch EC2 Server</h2>
+<pre>
+AMI: Amazon Linux 2023
+Instance: t2.micro
+Ports:
+  22 → SSH
+  8080 → Jenkins
+  8085 → Application
+</pre>
+
+<!-- SECTION 3 -->
+<h2>SECTION 3 — Install Docker</h2>
+<pre>
+sudo dnf update -y
+sudo dnf install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker ec2-user
+</pre>
+
+<!-- SECTION 4 -->
+<h2>SECTION 4 — Install Jenkins</h2>
+<pre>
+sudo dnf install java-17-amazon-corretto -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo dnf install jenkins -y
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+</pre>
+
+<!-- SECTION 5 -->
+<h2>SECTION 5 — Give Docker Access to Jenkins</h2>
+<pre>
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+</pre>
+
+<!-- SECTION 6 -->
+<h2>SECTION 6 — Create ECR Repository</h2>
+<pre>
+aws ecr create-repository --repository-name html-ci-demo --region ap-south-1
+</pre>
+
+<!-- SECTION 7 -->
+<h2>SECTION 7 — Add AWS Credentials to Jenkins</h2>
+<p>
+Navigate to:<br>
+<strong>Manage Jenkins → Credentials → Global → Add Credentials</strong><br><br>
+Choose type: <strong>AWS Credentials</strong>  
+Use: Access Key + Secret Key
+</p>
+
+<!-- SECTION 8 -->
+<h2>SECTION 8 — GitHub Repo Structure</h2>
+<pre>
+cicd_jenkins_to_docker/
+ ├── Dockerfile
+ ├── Jenkinsfile
+ ├── index.html
+</pre>
+
+<!-- SECTION 9 -->
+<h2>SECTION 9 — Dockerfile</h2>
+<pre>
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/index.html
+</pre>
+
+<!-- SECTION 10 -->
+<h2>SECTION 10 — Jenkinsfile</h2>
+<pre>
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = "ap-south-1"
+        ECR_REPO = "&lt;aws_id&gt;.dkr.ecr.ap-south-1.amazonaws.com/html-ci-demo"
+        APP_NAME = "html-ci-demo"
+        PORT = "8085"
+    }
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t $APP_NAME:${BUILD_NUMBER} ."
+            }
+        }
+
+        stage('Push Image to ECR') {
+            steps {
+                withCredentials([[ 
+                  $class: 'AmazonWebServicesCredentialsBinding', 
+                  credentialsId: 'aws-ecr' 
+                ]]) {
+                    sh '''
+                    aws ecr get-login-password --region $AWS_REGION |
+                    docker login --username AWS --password-stdin $ECR_REPO
+
+                    docker tag $APP_NAME:${BUILD_NUMBER} $ECR_REPO:${BUILD_NUMBER}
+                    docker push $ECR_REPO:${BUILD_NUMBER}
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to EC2') {
+            steps {
+                sh '''
+                docker stop $APP_NAME || true
+                docker rm $APP_NAME || true
+                docker run -d --name $APP_NAME -p $PORT:80 $ECR_REPO:${BUILD_NUMBER}
+                '''
+            }
+        }
+    }
+}
+</pre>
+
+<!-- SECTION 11 -->
+<h2>SECTION 11 — Configure GitHub Webhook</h2>
+<pre>
+http://&lt;EC2-PUBLIC-IP&gt;:8080/github-webhook/
+</pre>
+
+<!-- SECTION 12 -->
+<h2>SECTION 12 — Test the Pipeline</h2>
+<p>Modify <code>index.html</code> and push:</p>
+<pre>
+git add .
+git commit -m "update"
+git push
+</pre>
+
+<p>Your app will be available at:</p>
+
+<pre>
+http://&lt;EC2-PUBLIC-IP&gt;:8085
+</pre>
+
+<!-- SECTION 13 -->
+<h2>SECTION 13 — Rollback Instructions</h2>
+<pre>
+docker stop html-ci-demo
+docker rm html-ci-demo
+docker run -d -p 8085:80 \
+&lt;aws_id&gt;.dkr.ecr.ap-south-1.amazonaws.com/html-ci-demo:12
+</pre>
+
+<!-- SECTION 14 -->
+<h2>SECTION 14 — Troubleshooting Guide</h2>
+
+<h3>❌ Issue: “docker: permission denied”</h3>
+<p><strong>Cause:</strong> Jenkins user does not have Docker permissions.</p>
+<pre>
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+</pre>
+
+<h3>❌ Issue: Webhook not triggering Jenkins</h3>
+<ul>
+<li>Security Group must allow port <strong>8080</strong></li>
+<li>Use public IP, not localhost</li>
+<li>Correct path: <code>/github-webhook/</code></li>
+<li>GitHub → Webhooks → Check “Recent Deliveries” → HTTP 200 expected</li>
+</ul>
+
+<h3>❌ Issue: “Image not found” during deploy</h3>
+<strong>Cause:</strong> Wrong build number OR that image was never pushed to ECR.  
+Fix:
+<ul>
+<li>Verify images in ECR repository</li>
+<li>Ensure Jenkins push stage succeeded</li>
+</ul>
+
+<h3>❌ Issue: Jenkins cannot connect to ECR</h3>
+<ul>
+<li>IAM user missing ECR permissions</li>
+<li>Wrong AWS region</li>
+<li>Expired credentials in Jenkins</li>
+</ul>
+
+<h3>❌ Issue: Jenkins cannot clone GitHub repo</h3>
+<ul>
+<li>Repository is private → Add Personal Access Token</li>
+<li>Wrong branch name</li>
+</ul>
+
+<!-- SECTION 15 -->
+<h2>SECTION 15 — What Companies Do Differently</h2>
+
+<table border="1" cellpadding="10" cellspacing="0">
+<tr>
+<th>Your Setup (Beginner/Intermediate)</th>
+<th>Enterprise Setup</th>
+</tr>
+
+<tr>
+<td>Single EC2 running Jenkins + Docker</td>
+<td>Jenkins Master + Agents or GitHub Actions</td>
+</tr>
+
+<tr>
+<td>Docker run on EC2</td>
+<td>ECS / EKS / Fargate / ArgoCD</td>
+</tr>
+
+<tr>
+<td>Manual rollback using docker run</td>
+<td>Automated rollback using Canary / Blue-Green Deployment</td>
+</tr>
+
+<tr>
+<td>Webhook only</td>
+<td>GitHub App Integration + SSO + IAM Roles</td>
+</tr>
+
+<tr>
+<td>Images stored only in ECR</td>
+<td>Versioned images + lifecycle policies + Artifact signing</td>
+</tr>
+
+<tr>
+<td>One pipeline per application</td>
+<td>Shared libraries + reusable templates + centralized CI/CD platform</td>
+</tr>
+</table>
+
+<p>
+This guide still follows **real enterprise principles**, kept simple for **free-tier usage**.
+</p>
+
+</body>
+</html>
