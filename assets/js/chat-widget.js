@@ -1,5 +1,6 @@
 // Modified Chat Widget Script for Portfolio
 (function() {
+							   
     const styles = `
         .n8n-chat-widget {
             --chat--color-primary: #3498db;
@@ -15,8 +16,8 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            width: 380px;
-            height: 550px;
+            width: 400px;
+            height: 600px;
             background: var(--chat--color-background);
             border-radius: 16px;
             box-shadow: 0 10px 50px rgba(52, 152, 219, 0.2);
@@ -24,6 +25,11 @@
             overflow: hidden;
             font-family: inherit;
         }
+
+														
+						
+					   
+		 
 
         .n8n-chat-widget .chat-container.open {
             display: flex;
@@ -62,10 +68,10 @@
         }
 
         .n8n-chat-widget .brand-header img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 20%;
+            background: #3498db;
         }
 
         .n8n-chat-widget .brand-header span {
@@ -82,6 +88,8 @@
             padding: 40px 20px;
             height: 100%;
             text-align: center;
+						
+							 
         }
 
         .n8n-chat-widget .welcome-text {
@@ -124,6 +132,7 @@
         .n8n-chat-widget .response-text {
             font-size: 14px;
             color: #5a6c7d;
+						 
             margin: 0;
         }
 
@@ -158,6 +167,7 @@
 
         .n8n-chat-widget .chat-message {
             padding: 12px 16px;
+						  
             border-radius: 12px;
             max-width: 80%;
             word-wrap: break-word;
@@ -182,6 +192,7 @@
             color: white;
             align-self: flex-end;
             box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+						 
         }
 
         .n8n-chat-widget .chat-message.bot {
@@ -257,6 +268,11 @@
             justify-content: center;
         }
 
+													 
+						
+					   
+		 
+
         .n8n-chat-widget .chat-toggle:hover {
             transform: scale(1.1);
             background: #2980b9;
@@ -279,6 +295,7 @@
             color: #3498db;
             text-decoration: none;
             font-size: 12px;
+						 
             transition: opacity 0.2s;
             font-family: inherit;
         }
@@ -286,6 +303,7 @@
         .n8n-chat-widget .chat-footer a:hover {
             opacity: 0.8;
         }
+	  
 
         @media (max-width: 768px) {
             .n8n-chat-widget .chat-container {
@@ -306,6 +324,7 @@
     styleSheet.textContent = styles;
     document.head.appendChild(styleSheet);
 
+							
     const defaultConfig = {
         webhook: {
             url: 'YOUR_N8N_WEBHOOK_URL',
@@ -324,24 +343,35 @@
         style: {
             primaryColor: '#3498db',
             secondaryColor: '#2980b9',
+							  
             backgroundColor: '#ffffff',
             fontColor: '#2c3e50'
         }
     };
 
+									  
     const config = window.ChatWidgetConfig ? {
+		 
         webhook: { ...defaultConfig.webhook, ...window.ChatWidgetConfig.webhook },
         branding: { ...defaultConfig.branding, ...window.ChatWidgetConfig.branding },
         style: { ...defaultConfig.style, ...window.ChatWidgetConfig.style }
     } : defaultConfig;
 
+									   
     if (window.N8NChatWidgetInitialized) return;
     window.N8NChatWidgetInitialized = true;
 
     let currentSessionId = '';
 
+							  
     const widgetContainer = document.createElement('div');
     widgetContainer.className = 'n8n-chat-widget';
+	
+								   
+																							 
+																								 
+																								   
+																					   
 
     const chatContainer = document.createElement('div');
     chatContainer.className = 'chat-container';
@@ -387,9 +417,8 @@
     const toggleButton = document.createElement('button');
     toggleButton.className = 'chat-toggle';
     toggleButton.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.5 21.5l4.5-.838A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.476 0-2.886-.313-4.156-.878l-3.156.586.586-3.156A7.962 7.962 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/>
-        </svg>`;
+        <img src="assets/images/bot.png" style="width:70px;height:70px;">
+        `;
     
     widgetContainer.appendChild(chatContainer);
     widgetContainer.appendChild(toggleButton);
@@ -412,12 +441,16 @@
             sessionId: currentSessionId,
             route: config.webhook.route,
             metadata: { userId: "" }
+						  
+			 
         }];
 
         try {
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
+						  
                 headers: { 'Content-Type': 'application/json' },
+				  
                 body: JSON.stringify(data)
             });
 
@@ -447,6 +480,8 @@
             route: config.webhook.route,
             chatInput: message,
             metadata: { userId: "" }
+						  
+			 
         };
 
         const userMessageDiv = document.createElement('div');
@@ -458,7 +493,9 @@
         try {
             const response = await fetch(config.webhook.url, {
                 method: 'POST',
+						  
                 headers: { 'Content-Type': 'application/json' },
+				  
                 body: JSON.stringify(messageData)
             });
             
@@ -503,6 +540,7 @@
         chatContainer.classList.toggle('open');
     });
 
+								
     const closeButtons = chatContainer.querySelectorAll('.close-button');
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
