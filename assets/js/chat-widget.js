@@ -307,10 +307,11 @@
 
         @media (max-width: 768px) {
             .n8n-chat-widget .chat-container {
-                width: calc(100% - 40px);
+                width: calc(100% - 20px);
                 right: 20px;
                 left: 20px;
-                height: 500px;
+                height: 600px;
+                max-width: 380px;
             }
 
             .n8n-chat-widget .chat-toggle {
