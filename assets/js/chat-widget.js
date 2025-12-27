@@ -285,6 +285,7 @@
         }
 
         .n8n-chat-widget .chat-footer {
+            display: none;
             padding: 12px;
             text-align: center;
             background: var(--chat--color-background);
