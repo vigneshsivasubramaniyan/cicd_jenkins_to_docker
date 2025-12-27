@@ -16,7 +16,7 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            width: 380px;
+            width: 360px;
             height: 600px;
             background: var(--chat--color-background);
             border-radius: 16px;
@@ -311,7 +311,7 @@
                 right: 20px;
                 left: 20px;
                 height: 600px;
-                max-width: 380px;
+                max-width: 360px;
             }
 
             .n8n-chat-widget .chat-toggle {
